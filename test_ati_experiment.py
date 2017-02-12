@@ -8,3 +8,4 @@ sys.modules["RPi"] = my_module
 from ati_experiment import experiment
 
 experiment()
+print("Test finished")
