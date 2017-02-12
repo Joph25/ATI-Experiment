@@ -10,17 +10,31 @@ class StepperMotor:
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
+        self.max_A = 0
         self.cur_rel_pos = 0  # percent value >=0 <= 100
         self.last_signal_A = False
+        self.calibrate()
 
     # ---------------------------------------------------------------------------------------------------------
     def reset(self):  # move to real world 0 position
         while not self.check_end():
             self.step(COUNTERCLOCKWISE)
-        self.counter_A=0
-        self.counter_B=0
-        self.counter_I=0
+        self.counter_A = 0
+        self.counter_B = 0
+        self.counter_I = 0
         print("Motor is reset")
+
+    # -----------------------------------------------------------------------------------------------------
+    def calibrate(self):
+        self.reset()
+        self.step(CLOCKWISE)
+        while not self.check_end():
+            self.read_counter_a(CLOCKWISE)
+            self.step(CLOCKWISE)
+        self.max_A = self.counter_A
+        self.reset()
+        print("Motor is calibrated")
+        print("Max value of counter A is: " + str(self.max_A))
 
     # -----------------------------------------------------------------------------------------------------
     def step(self, direction):
@@ -40,27 +54,28 @@ class StepperMotor:
         else:
             direction = COUNTERCLOCKWISE
         counter_start = self.counter_A
-        self.read_counter_A(direction)
+        self.read_counter_a(direction)
         while (self.counter_A - counter_start) < delta:
             self.step(direction)
-            self.read_counter_A(direction)
+            self.read_counter_a(direction)
 
     # -----------------------------------------------------------------------------------------------------
-    def read_counter_A(self, direction):
-        signal_A = self.read_signal_A()
-        if signal_A != self.last_signal_A:
+    def read_counter_a(self, direction):
+        signal_a = self.read_signal_a()
+        if signal_a != self.last_signal_A:
             if direction == CLOCKWISE:
                 self.counter_A += 1
             else:
                 self.counter_A -= 1
+        self.last_signal_A = signal_a
         print("Counter A: " + str(self.counter_A))
 
     # -----------------------------------------------------------------------------------------------------
-    def read_signal_A(self):
-        return bool(random.random() * 2)
+    def read_signal_a(self):
+        return bool((random.random() * 2)//1)
 
     # -----------------------------------------------------------------------------------------------------
     def check_end(self):
-        tmp=random.random() * 1.1
-        tmp=bool(tmp//1)
+        tmp = (random.random() * 1.1)
+        tmp = bool(tmp // 1)
         return tmp
