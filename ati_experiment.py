@@ -14,7 +14,7 @@ ENDPIN_MOTORY = 12
 
 
 # ---------------------------------------------------------------------------------------------------------
-def main():
+def experiment():
     motor_x = StepperMotor(STEP_PINS_MOTORX, ENDPIN_MOTORX)
     motor_y = StepperMotor(STEP_PINS_MOTORY, ENDPIN_MOTORY)
 
@@ -23,4 +23,4 @@ def main():
 
 
 # ---------------------------------------------------------------------------------------------------------
-__name__ == '__main__' and main()
+__name__ == '__main__' and experiment()

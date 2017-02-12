@@ -1,5 +1,6 @@
 import random
-import RPi.GPIO as GPIO
+
+from RPi import GPIO
 
 CLOCKWISE = 1
 COUNTERCLOCKWISE = 0
@@ -21,8 +22,8 @@ class StepperMotor:
         self.last_signal_A = False
 
         # Set motor_pins as output
+        print("Setup pins")
         for pin in self.motor_pins:
-            print "Setup pins"
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, False)
         # set end_pin as input
