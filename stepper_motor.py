@@ -1,4 +1,5 @@
 import random
+import RPi.GPIO as GPIO
 
 CLOCKWISE = 1
 COUNTERCLOCKWISE = 0
@@ -6,13 +7,28 @@ COUNTERCLOCKWISE = 0
 
 class StepperMotor:
     # -----------------------------------------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self, motor_pins, end_pin):
+        # Use BCM GPIO references
+        # instead of physical pin numbers
+        GPIO.setmode(GPIO.BCM)
+        self.motor_pins = motor_pins
+        self.end_pin = end_pin
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
         self.max_A = 0
         self.cur_rel_pos = 0  # percent value >=0 <= 100
         self.last_signal_A = False
+
+        # Set motor_pins as output
+        for pin in self.motor_pins:
+            print "Setup pins"
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, False)
+        # set end_pin as input
+        GPIO.setup(self.end_pin, GPIO.IN)
+        GPIO.input(self.end_pin, False)
+
         self.calibrate()
 
     # ---------------------------------------------------------------------------------------------------------
@@ -72,7 +88,7 @@ class StepperMotor:
 
     # -----------------------------------------------------------------------------------------------------
     def read_signal_a(self):
-        return bool((random.random() * 2)//1)
+        return bool((random.random() * 2) // 1)
 
     # -----------------------------------------------------------------------------------------------------
     def check_end(self):
