@@ -28,7 +28,7 @@ class StepperMotor:
             GPIO.output(pin, False)
         # set end_pin as input
         GPIO.setup(self.end_pin, GPIO.IN)
-        GPIO.input(self.end_pin, False)
+        GPIO.input(self.end_pin)
         print("Setup endpin: "+str(self.end_pin))
 
         self.calibrate()
