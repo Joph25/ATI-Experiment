@@ -1,11 +1,12 @@
 import logging
-from time import sleep
+from time import sleep, time
 
 from RPi import GPIO
 
 CLOCKWISE = 1
 COUNTERCLOCKWISE = 0
 MOTOR_WAIT_TIME = 0.01  # equals .01 seconds or 10 ms
+PIN_TIMOUT = 30  # timout reading end_pin
 
 
 class StepperMotor:
@@ -38,8 +39,12 @@ class StepperMotor:
 
     # ---------------------------------------------------------------------------------------------------------
     def reset(self):  # move to real world 0 position
+        start_time = time()
         while not self.check_end():
             self.step(COUNTERCLOCKWISE)
+            # check for timeout
+            if time() - start_time >= PIN_TIMOUT:
+                raise Exception("no end_pin signal within: " + str(PIN_TIMOUT) + " seconds")
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
