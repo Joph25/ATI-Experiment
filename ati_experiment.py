@@ -16,6 +16,7 @@ ENDPIN_MOTORY = 12
 # Define GPIO input signal to use for counter A of motor y (physical pin 13)
 APIN_MOTORY = 27
 
+
 # ---------------------------------------------------------------------------------------------------------
 def experiment():
     motor_x = StepperMotor(STEP_PINS_MOTORX, ENDPIN_MOTORX, APIN_MOTORX)

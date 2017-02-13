@@ -1,20 +1,21 @@
-import random
+from time import sleep
 
 from RPi import GPIO
 
 CLOCKWISE = 1
 COUNTERCLOCKWISE = 0
+MOTOR_WAIT_TIME = 0.01  # equals .01 seconds or 10 ms
 
 
 class StepperMotor:
     # -----------------------------------------------------------------------------------------------------
-    def __init__(self, motor_pins, end_pin,a_pin):
+    def __init__(self, motor_pins, end_pin, a_pin):
         # Use BCM GPIO references
         # instead of physical pin numbers
         GPIO.setmode(GPIO.BCM)
         self.motor_pins = motor_pins
         self.end_pin = end_pin
-        self.a_pin=a_pin
+        self.a_pin = a_pin
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
@@ -23,13 +24,13 @@ class StepperMotor:
         self.last_signal_A = False
 
         # Set motor_pins as output
-        print("Setup Motor pins"+str(self.motor_pins))
+        print("Setup Motor pins" + str(self.motor_pins))
         for pin in self.motor_pins:
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, False)
         # set end_pin as input
         GPIO.setup(self.end_pin, GPIO.IN)
-        print("Setup endpin: "+str(self.end_pin))
+        print("Setup end_pin: " + str(self.end_pin))
         # set a_pin as input
         GPIO.setup(self.a_pin, GPIO.IN)
         print("Setup a_pin: " + str(self.a_pin))
@@ -42,7 +43,7 @@ class StepperMotor:
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
-        print("Motor " + str(self.motor_pins)+ " is reset")
+        print("Motor " + str(self.motor_pins) + " is reset")
 
     # -----------------------------------------------------------------------------------------------------
     def calibrate(self):
@@ -58,6 +59,60 @@ class StepperMotor:
     # -----------------------------------------------------------------------------------------------------
     def step(self, direction):
         print("motor stepped in " + str(direction) + " direction")
+        # controlling a 4-wire bipolar stepper motor (A,notA,B,notB)
+        if direction == CLOCKWISE:
+            # step 1
+            GPIO.output(self.motor_pins[0], True)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[3], False)
+            sleep(MOTOR_WAIT_TIME)
+            # step 2
+            GPIO.output(self.motor_pins[0], False)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], True)
+            GPIO.output(self.motor_pins[3], False)
+            sleep(MOTOR_WAIT_TIME)
+            # step 3
+            GPIO.output(self.motor_pins[0], False)
+            GPIO.output(self.motor_pins[1], True)
+            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[3], False)
+            sleep(MOTOR_WAIT_TIME)
+            # step 4
+            GPIO.output(self.motor_pins[0], False)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[3], True)
+            sleep(MOTOR_WAIT_TIME)
+        else:
+            # step 4
+            GPIO.output(self.motor_pins[0], False)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[3], True)
+            sleep(MOTOR_WAIT_TIME)
+            # step 3
+            GPIO.output(self.motor_pins[0], False)
+            GPIO.output(self.motor_pins[1], True)
+            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[3], False)
+            sleep(MOTOR_WAIT_TIME)
+            # step 2
+            GPIO.output(self.motor_pins[0], False)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], True)
+            GPIO.output(self.motor_pins[3], False)
+            sleep(MOTOR_WAIT_TIME)
+            # step 1
+            GPIO.output(self.motor_pins[0], True)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[3], False)
+            sleep(MOTOR_WAIT_TIME)
+        # reset all motor pins to low
+        for pin in self.motor_pins:
+            GPIO.output(pin, False)
 
     # ---------------------------------------------------------------------------------------------------------
     def go_position(self, new_rel_pos):
@@ -91,12 +146,12 @@ class StepperMotor:
 
     # -----------------------------------------------------------------------------------------------------
     def read_signal_a(self):
-        #return bool((random.random() * 2) // 1)
+        # return bool((random.random() * 2) // 1)
         return GPIO.input(self.a_pin)
 
     # -----------------------------------------------------------------------------------------------------
     def check_end(self):
-        #tmp = (random.random() * 1.1)
-        #tmp = bool(tmp // 1)
-        #return tmp
+        # tmp = (random.random() * 1.1)
+        # tmp = bool(tmp // 1)
+        # return tmp
         return GPIO.input(self.end_pin)
