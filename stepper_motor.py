@@ -22,13 +22,14 @@ class StepperMotor:
         self.last_signal_A = False
 
         # Set motor_pins as output
-        print("Setup pins")
+        print("Setup Motor pins"+str(self.motor_pins))
         for pin in self.motor_pins:
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, False)
         # set end_pin as input
         GPIO.setup(self.end_pin, GPIO.IN)
         GPIO.input(self.end_pin, False)
+        print("Setup endpin: "+str(self.end_pin))
 
         self.calibrate()
 
@@ -39,7 +40,7 @@ class StepperMotor:
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
-        print("Motor is reset")
+        print("Motor " + str(self.motor_pins)+ " is reset")
 
     # -----------------------------------------------------------------------------------------------------
     def calibrate(self):
@@ -50,8 +51,7 @@ class StepperMotor:
             self.step(CLOCKWISE)
         self.max_A = self.counter_A
         self.reset()
-        print("Motor is calibrated")
-        print("Max value of counter A is: " + str(self.max_A))
+        print("Motor is calibrated. Max value of counter A is: " + str(self.max_A))
 
     # -----------------------------------------------------------------------------------------------------
     def step(self, direction):
