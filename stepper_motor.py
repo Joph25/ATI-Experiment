@@ -154,10 +154,13 @@ class StepperMotor:
         else:
             direction = COUNTERCLOCKWISE
         counter_start = self.counter_A
+        start_time = time()
         self.read_counter_a(direction)
         while (self.counter_A - counter_start) < delta:
             self.step(direction)
             self.read_counter_a(direction)
+            if time() - start_time >= PIN_TIMOUT:
+                raise Exception("Timout during motor move")
         logging.debug("Motor moved: " + str(delta))
 
     # -----------------------------------------------------------------------------------------------------
@@ -169,7 +172,7 @@ class StepperMotor:
             else:
                 self.counter_A -= 1
         self.last_signal_A = signal_a
-        logging.info("Counter A: " + str(self.counter_A))
+        logging.debug("Counter A: " + str(self.counter_A))
 
     # -----------------------------------------------------------------------------------------------------
     def read_signal_a(self):
