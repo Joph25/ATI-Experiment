@@ -8,12 +8,13 @@ COUNTERCLOCKWISE = 0
 
 class StepperMotor:
     # -----------------------------------------------------------------------------------------------------
-    def __init__(self, motor_pins, end_pin):
+    def __init__(self, motor_pins, end_pin,a_pin):
         # Use BCM GPIO references
         # instead of physical pin numbers
         GPIO.setmode(GPIO.BCM)
         self.motor_pins = motor_pins
         self.end_pin = end_pin
+        self.a_pin=a_pin
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
@@ -28,9 +29,10 @@ class StepperMotor:
             GPIO.output(pin, False)
         # set end_pin as input
         GPIO.setup(self.end_pin, GPIO.IN)
-        GPIO.input(self.end_pin)
         print("Setup endpin: "+str(self.end_pin))
-
+        # set a_pin as input
+        GPIO.setup(self.a_pin, GPIO.IN)
+        print("Setup a_pin: " + str(self.a_pin))
         self.calibrate()
 
     # ---------------------------------------------------------------------------------------------------------
@@ -89,10 +91,12 @@ class StepperMotor:
 
     # -----------------------------------------------------------------------------------------------------
     def read_signal_a(self):
-        return bool((random.random() * 2) // 1)
+        #return bool((random.random() * 2) // 1)
+        return GPIO.input(self.a_pin)
 
     # -----------------------------------------------------------------------------------------------------
     def check_end(self):
-        tmp = (random.random() * 1.1)
-        tmp = bool(tmp // 1)
-        return tmp
+        #tmp = (random.random() * 1.1)
+        #tmp = bool(tmp // 1)
+        #return tmp
+        return GPIO.input(self.end_pin)
