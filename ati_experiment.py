@@ -20,7 +20,7 @@ APIN_MOTORY = 27
 
 # ---------------------------------------------------------------------------------------------------------
 def experiment():
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     motor_x = StepperMotor(STEP_PINS_MOTORX, ENDPIN_MOTORX, APIN_MOTORX)
     motor_y = StepperMotor(STEP_PINS_MOTORY, ENDPIN_MOTORY, APIN_MOTORY)
 
