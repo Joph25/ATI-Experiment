@@ -52,11 +52,14 @@ class StepperMotor:
 
     # -----------------------------------------------------------------------------------------------------
     def calibrate(self):
+        start_time = time()
         self.reset()
         self.step(CLOCKWISE)
         while not self.check_end():
             self.read_counter_a(CLOCKWISE)
             self.step(CLOCKWISE)
+            if time() - start_time >= PIN_TIMOUT:
+                raise Exception("no end_pin signal within: " + str(PIN_TIMOUT) + " seconds")
         self.max_A = self.counter_A
         self.reset()
         logging.info("Motor is calibrated. Max value of counter A is: " + str(self.max_A))
@@ -67,24 +70,32 @@ class StepperMotor:
         # one phase mode
         if direction == CLOCKWISE:
             # step 1
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], True)
             GPIO.output(self.motor_pins[1], False)
             GPIO.output(self.motor_pins[2], False)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 2
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], False)
             GPIO.output(self.motor_pins[1], False)
             GPIO.output(self.motor_pins[2], True)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 3
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], False)
             GPIO.output(self.motor_pins[1], True)
             GPIO.output(self.motor_pins[2], False)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 4
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], False)
             GPIO.output(self.motor_pins[1], False)
             GPIO.output(self.motor_pins[2], False)
@@ -92,24 +103,32 @@ class StepperMotor:
             sleep(MOTOR_WAIT_TIME)
         else:
             # step 4
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], False)
             GPIO.output(self.motor_pins[1], False)
             GPIO.output(self.motor_pins[2], False)
             GPIO.output(self.motor_pins[3], True)
             sleep(MOTOR_WAIT_TIME)
             # step 3
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], False)
             GPIO.output(self.motor_pins[1], True)
             GPIO.output(self.motor_pins[2], False)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 2
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], False)
             GPIO.output(self.motor_pins[1], False)
             GPIO.output(self.motor_pins[2], True)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 1
+            if self.check_end():  # no move on end position
+                return
             GPIO.output(self.motor_pins[0], True)
             GPIO.output(self.motor_pins[1], False)
             GPIO.output(self.motor_pins[2], False)
