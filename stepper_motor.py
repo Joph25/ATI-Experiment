@@ -32,7 +32,7 @@ class StepperMotor:
 
         # set end_pin and a_pin as input
         logging.info("Setup end-pin and a-pin: " + str(self.end_pin) + " " + str(self.a_pin))
-        GPIO.setup(self.end_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.end_pin, GPIO.IN)
         GPIO.setup(self.a_pin, GPIO.IN)
 
         self.calibrate()
