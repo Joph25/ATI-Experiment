@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 
 from RPi import GPIO
@@ -10,9 +11,6 @@ MOTOR_WAIT_TIME = 0.01  # equals .01 seconds or 10 ms
 class StepperMotor:
     # -----------------------------------------------------------------------------------------------------
     def __init__(self, motor_pins, end_pin, a_pin):
-        # Use BCM GPIO references
-        # instead of physical pin numbers
-        GPIO.setmode(GPIO.BCM)
         self.motor_pins = motor_pins
         self.end_pin = end_pin
         self.a_pin = a_pin
@@ -23,17 +21,19 @@ class StepperMotor:
         self.cur_rel_pos = 0  # percent value >=0 <= 100
         self.last_signal_A = False
 
+        # Use BCM GPIO references instead of physical pin numbers
+        GPIO.setmode(GPIO.BCM)
         # Set motor_pins as output
-        print("Setup Motor pins" + str(self.motor_pins))
+        logging.info("Setup Motor pins" + str(self.motor_pins))
         for pin in self.motor_pins:
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, False)
-        # set end_pin as input
-        GPIO.setup(self.end_pin, GPIO.IN)
-        print("Setup end_pin: " + str(self.end_pin))
-        # set a_pin as input
+
+        # set end_pin and a_pin as input
+        logging.info("Setup end-pin and a-pin: " + str(self.end_pin) + " " + str(self.a_pin))
+        GPIO.setup(self.end_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.a_pin, GPIO.IN)
-        print("Setup a_pin: " + str(self.a_pin))
+
         self.calibrate()
 
     # ---------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ class StepperMotor:
         self.counter_A = 0
         self.counter_B = 0
         self.counter_I = 0
-        print("Motor " + str(self.motor_pins) + " is reset")
+        logging.info("Motor " + str(self.motor_pins) + " is reset")
 
     # -----------------------------------------------------------------------------------------------------
     def calibrate(self):
@@ -54,12 +54,12 @@ class StepperMotor:
             self.step(CLOCKWISE)
         self.max_A = self.counter_A
         self.reset()
-        print("Motor is calibrated. Max value of counter A is: " + str(self.max_A))
+        logging.info("Motor is calibrated. Max value of counter A is: " + str(self.max_A))
 
     # -----------------------------------------------------------------------------------------------------
     def step(self, direction):
-        print("motor stepped in " + str(direction) + " direction")
         # controlling a 4-wire bipolar stepper motor (A,notA,B,notB)
+        # one phase mode
         if direction == CLOCKWISE:
             # step 1
             GPIO.output(self.motor_pins[0], True)
@@ -113,6 +113,7 @@ class StepperMotor:
         # reset all motor pins to low
         for pin in self.motor_pins:
             GPIO.output(pin, False)
+        logging.debug("Motor stepped in " + str(direction) + " direction")
 
     # ---------------------------------------------------------------------------------------------------------
     def go_position(self, new_rel_pos):
@@ -120,6 +121,7 @@ class StepperMotor:
         delta = new_rel_pos - self.cur_rel_pos
         if delta != 0:
             self.move(delta)
+        logging.debug("Motor moved to position: " + str(new_rel_pos))
 
     # -----------------------------------------------------------------------------------------------------
     def move(self, delta):
@@ -132,6 +134,7 @@ class StepperMotor:
         while (self.counter_A - counter_start) < delta:
             self.step(direction)
             self.read_counter_a(direction)
+        logging.debug("Motor moved: " + str(delta))
 
     # -----------------------------------------------------------------------------------------------------
     def read_counter_a(self, direction):
@@ -142,16 +145,16 @@ class StepperMotor:
             else:
                 self.counter_A -= 1
         self.last_signal_A = signal_a
-        print("Counter A: " + str(self.counter_A))
+        logging.info("Counter A: " + str(self.counter_A))
 
     # -----------------------------------------------------------------------------------------------------
     def read_signal_a(self):
-        # return bool((random.random() * 2) // 1)
         return GPIO.input(self.a_pin)
 
     # -----------------------------------------------------------------------------------------------------
     def check_end(self):
-        # tmp = (random.random() * 1.1)
-        # tmp = bool(tmp // 1)
-        # return tmp
         return GPIO.input(self.end_pin)
+
+    # -----------------------------------------------------------------------------------------------------
+    def __del__(self):
+        GPIO.cleanup()

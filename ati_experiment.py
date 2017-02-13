@@ -1,3 +1,4 @@
+import logging
 from stepper_motor import StepperMotor
 
 # Define GPIO output signals to use for motor x
@@ -19,6 +20,7 @@ APIN_MOTORY = 27
 
 # ---------------------------------------------------------------------------------------------------------
 def experiment():
+    logging.basicConfig(level=logging.DEBUG)
     motor_x = StepperMotor(STEP_PINS_MOTORX, ENDPIN_MOTORX, APIN_MOTORX)
     motor_y = StepperMotor(STEP_PINS_MOTORY, ENDPIN_MOTORY, APIN_MOTORY)
 
