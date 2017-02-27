@@ -35,7 +35,7 @@ class StepperMotor:
         GPIO.setup(self.end_pin, GPIO.IN)
         GPIO.setup(self.a_pin, GPIO.IN)
 
-        self.calibrate()
+        #self.calibrate()
 
     # ---------------------------------------------------------------------------------------------------------
     def reset(self):  # move to real world 0 position
