@@ -5,7 +5,7 @@ from RPi import GPIO
 
 CLOCKWISE = 1
 COUNTERCLOCKWISE = 0
-MOTOR_WAIT_TIME = 0.1  # equals .1 seconds or 100 ms
+MOTOR_WAIT_TIME = 0.05  # equals .05 seconds or 50 ms
 PIN_TIMOUT = 30  # timout reading end_pin
 
 
