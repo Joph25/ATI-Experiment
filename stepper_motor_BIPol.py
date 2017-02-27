@@ -79,16 +79,16 @@ class StepperMotor:
             if self.check_end():  # no move on end position
                 return
             GPIO.output(self.motor_pins[0], False)
-            GPIO.output(self.motor_pins[1], False)
-            GPIO.output(self.motor_pins[2], True)
+            GPIO.output(self.motor_pins[1], True)
+            GPIO.output(self.motor_pins[2], False)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 3
             if self.check_end():  # no move on end position
                 return
             GPIO.output(self.motor_pins[0], False)
-            GPIO.output(self.motor_pins[1], True)
-            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], True)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 4
@@ -113,16 +113,16 @@ class StepperMotor:
             if self.check_end():  # no move on end position
                 return
             GPIO.output(self.motor_pins[0], False)
-            GPIO.output(self.motor_pins[1], True)
-            GPIO.output(self.motor_pins[2], False)
+            GPIO.output(self.motor_pins[1], False)
+            GPIO.output(self.motor_pins[2], True)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 2
             if self.check_end():  # no move on end position
                 return
             GPIO.output(self.motor_pins[0], False)
-            GPIO.output(self.motor_pins[1], False)
-            GPIO.output(self.motor_pins[2], True)
+            GPIO.output(self.motor_pins[1], True)
+            GPIO.output(self.motor_pins[2], False)
             GPIO.output(self.motor_pins[3], False)
             sleep(MOTOR_WAIT_TIME)
             # step 1
