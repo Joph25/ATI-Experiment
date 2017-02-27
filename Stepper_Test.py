@@ -3,7 +3,7 @@ from stepper_motor_BIPol import StepperMotor
 
 # ---------------------------------------------------------------------------------------------------------
 def main():
-    motor_x = StepperMotor([17, 18, 17, 22], 20, 21)
+    motor_x = StepperMotor([17, 18, 27, 22], 20, 21)
     for i in range(0, 10):
         motor_x.step(1)
 
