@@ -1,4 +1,4 @@
-from stepper_motor import StepperMotor
+from stepper_motor_BIPol.py import StepperMotor
 
 
 # ---------------------------------------------------------------------------------------------------------
