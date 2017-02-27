@@ -4,7 +4,7 @@ from stepper_motor import StepperMotor
 # ---------------------------------------------------------------------------------------------------------
 def main():
     motor_x = StepperMotor([17, 18, 17, 22], 20, 21)
-    for i in range(0, 10)
+    for i in range(0, 10):
         motor_x.step(1)
 
 
