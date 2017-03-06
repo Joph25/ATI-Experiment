@@ -9,15 +9,20 @@ def main():
         conf = xmltodict.parse(fd.read())
     print(conf)
     port_A = conf['config_stepper_motor']['motor1']['port_A']
-    print(port_A)
-    #motor_x = StepperMotor([17, 18, 27, 22], 20, 21)
-    #print("Counter is: "+str(motor_x.counter_A))
-    #for i in range(0, 300):
-    #    motor_x.step(1)
-    #print("Counter is: "+str(motor_x.counter_A))
-    #for i in range(0, 300):
-    #     motor_x.step(0)
-    #print("Counter is: "+str(motor_x.counter_A))
+    port_B = conf['config_stepper_motor']['motor1']['port_B']
+    port_C = conf['config_stepper_motor']['motor1']['port_C']
+    port_D = conf['config_stepper_motor']['motor1']['port_D']
+    port_end = conf['config_stepper_motor']['motor1']['port_end']
+    port_counter = conf['config_stepper_motor']['motor1']['port_counter']
+    motor_x = StepperMotor([port_A,port_B,port_C,port_D], port_end, port_counter)
+    #motor_x = StepperMotor(conf['config_stepper_motor']['motor1'])
+    print("Counter is: "+str(motor_x.counter_A))
+    for i in range(0, 300):
+        motor_x.step(1)
+    print("Counter is: "+str(motor_x.counter_A))
+    for i in range(0, 300):
+         motor_x.step(0)
+    print("Counter is: "+str(motor_x.counter_A))
 
 
 # ---------------------------------------------------------------------------------------------------------
