@@ -1,9 +1,9 @@
-<mydocument has="an attribute">
-  <and>
-    <many>elements</many>
-    <many>more elements</many>
-  </and>
+<config>
+  <value1>
+    <value1.1>4711</value1.1>
+    <value1.2>mytext</value1.2>
+  </value1>
   <plus a="complex">
     element as well
   </plus>
-</mydocument>
+</config>
