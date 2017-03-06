@@ -1,5 +1,5 @@
 import xmltodict
-from stepper_motor_BIPol import StepperMotor
+from ../stepper_motor_BIPol import StepperMotor
 
 
 # ---------------------------------------------------------------------------------------------------------
