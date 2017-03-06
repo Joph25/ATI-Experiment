@@ -1,4 +1,4 @@
-from xmltodict import parse
+import xmltodict
 
 with open('config.xml') as fd:
     doc = xmltodict.parse(fd.read())
