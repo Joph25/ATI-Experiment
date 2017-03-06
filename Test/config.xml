@@ -1,9 +1,18 @@
-<config>
-  <value1>
-    <value1.1>4711</value1.1>
-    <value1.2>mytext</value1.2>
-  </value1>
-  <plus a="complex">
-    element as well
-  </plus>
-</config>
+<config_stepper_motor>
+  <motor1>
+    <port_A>17</port_A>
+    <port_B>18</port_B>
+    <port_C>27</port_C>
+    <port_D>22</port_D>
+    <port_end>20</port_end>
+    <port_counter>21</port_counter>
+  </motor1>
+  <motor2>
+    <port_A>17</port_A>
+    <port_B>18</port_B>
+    <port_C>27</port_C>
+    <port_D>22</port_D>
+    <port_end>20</port_end>
+    <port_counter>21</port_counter>
+  </motor2>
+</config_stepper_motor>
