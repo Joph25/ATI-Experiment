@@ -7,13 +7,13 @@ def main():
     #read config parameters from config.xml
     with open('config.xml') as fd:
         conf = xmltodict.parse(fd.read())
-    print(conf)
-    port_A = conf['config_stepper_motor']['motor1']['port_A']
-    port_B = conf['config_stepper_motor']['motor1']['port_B']
-    port_C = conf['config_stepper_motor']['motor1']['port_C']
-    port_D = conf['config_stepper_motor']['motor1']['port_D']
-    port_end = conf['config_stepper_motor']['motor1']['port_end']
-    port_counter = conf['config_stepper_motor']['motor1']['port_counter']
+    #print(conf)
+    port_A = int(conf['config_stepper_motor']['motor1']['port_A'])
+    port_B = int(conf['config_stepper_motor']['motor1']['port_B'])
+    port_C = int(conf['config_stepper_motor']['motor1']['port_C'])
+    port_D = int(conf['config_stepper_motor']['motor1']['port_D'])
+    port_end = int(conf['config_stepper_motor']['motor1']['port_end'])
+    port_counter = int(conf['config_stepper_motor']['motor1']['port_counter'])
     motor_x = StepperMotor([port_A,port_B,port_C,port_D], port_end, port_counter)
     #motor_x = StepperMotor(conf['config_stepper_motor']['motor1'])
     print("Counter is: "+str(motor_x.counter_A))
